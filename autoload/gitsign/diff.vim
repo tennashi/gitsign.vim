@@ -1,0 +1,66 @@
+echom 'loaded autoload/gitsign/diff.vim'
+let s:diff_cmd = ['git', '-c', 'diff.noprefix', 'diff', '--no-ext-diff', '--no-color', '-U0']
+let s:hunk_re = '^@@\v -(\d+),?(\d*) \+(\d+),?(\d*)'
+let s:filename_re = '^+++\v (.*)'
+let s:processing_file = ''
+
+function! gitsign#diff#initialize(repo_root) abort
+  let s:repository_root = a:repo_root
+endfunction
+
+function! gitsign#diff#update() abort
+  call job_start(s:diff_cmd, {
+  \ 'out_cb': function('s:process_output'),
+  \ 'exit_cb': function('s:done'),
+  \})
+endfunction
+
+function! s:process_output(_ch, msg) abort
+  let l:matches = matchlist(a:msg, s:filename_re)
+  if len(l:matches) !=# 0
+    let s:processing_file = l:matches[1]
+    return
+  endif
+
+  let l:matches = matchlist(a:msg, s:hunk_re)
+  if len(l:matches) !=# 0
+    let l:hunk = map(l:matches[1:4],
+    \ { _, val -> val ==# ''? 1 : str2nr(val) }
+    \)
+
+    call gitsign#add_sign(s:processing_file, {
+    \ 'del_start': l:hunk[0],
+    \ 'del_range': l:hunk[1],
+    \ 'add_start': l:hunk[2],
+    \ 'add_range': l:hunk[3],
+    \})
+  endif
+endfunction
+
+function! s:done(_job, _status) abort
+  doautocmd <nomodeline> User gitsign_sign_updated
+endfunction
+
+function! gitsign#diff#to_sign(hunk) abort
+  let l:signs = {}
+  let l:lnum = a:hunk['add_start']
+  if a:hunk['add_range'] == 0
+    let l:signs[l:lnum] = l:lnum == 0 ? 'GitsignDeleteFirstLine' : 'GitsignDelete'
+    return l:signs
+  endif
+
+  if a:hunk['del_range'] == 0
+    while l:lnum < a:hunk['add_start'] + a:hunk['add_range']
+      let l:signs[l:lnum] = 'GitsignAdd'
+      let l:lnum += 1
+    endwhile
+    return l:signs
+  endif
+
+  while l:lnum < a:hunk['add_start'] + a:hunk['add_range']
+    let l:signs[l:lnum] = 'GitsignChange'
+    let l:lnum += 1
+  endwhile
+
+  return l:signs
+endfunction
