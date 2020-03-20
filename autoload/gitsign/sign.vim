@@ -4,27 +4,31 @@ let g:gitsign#sign#add_mark = get(g:, 'gitsign#sign#add_mark', '+')
 let g:gitsign#sign#delete_mark = get(g:, 'gitsign#sign#delete_mark', '_')
 let g:gitsign#sign#delete_first_line_mark = get(g:, 'gitsign#sign#delete_first_line_mark', '^')
 let g:gitsign#sign#change_mark = get(g:, 'gitsign#sign#change_mark', '~')
-
 let s:sign_defs = [
 \ {
 \   'name': 'GitsignAdd',
 \   'text': g:gitsign#sign#add_mark,
-\   'linehl': 'DiffAdd'
+\   'linehl': 'GitsignAdd',
+\   'texthl': 'GitsignAddMark',
 \ },
 \ {
 \   'name': 'GitsignDelete',
 \   'text': g:gitsign#sign#delete_mark,
-\   'linehl': 'DiffDelete'
+\   'linehl': 'GitsignDelete',
+\   'texthl': 'GitsignDeleteMark',
 \ },
 \ {
 \   'name': 'GitsignDeleteFirstLine',
 \   'text': g:gitsign#sign#delete_first_line_mark,
-\   'linehl': 'DiffDelete'
+\   'linehl': 'GitsignDelete',
+\   'texthl': 'GitsignDeleteMark',
 \ },
 \ {
 \   'name': 'GitsignChange',
 \   'text': g:gitsign#sign#change_mark,
-\   'linehl': 'DiffChange'},
+\   'linehl': 'GitsignChange',
+\   'texthl': 'GitsignChangeMark',
+\ },
 \]
 
 function! gitsign#sign#initialize() abort

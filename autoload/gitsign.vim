@@ -19,6 +19,7 @@ function! gitsign#initialize() abort
     return
   endif
 
+  call gitsign#highlight#initialize()
   call gitsign#sign#initialize()
   call gitsign#enable()
 endfunction
