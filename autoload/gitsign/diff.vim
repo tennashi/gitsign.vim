@@ -1,4 +1,3 @@
-echom 'loaded autoload/gitsign/diff.vim'
 let s:diff_cmd = ['git', '-c', 'diff.noprefix', 'diff', '--no-ext-diff', '--no-color', '-U0']
 let s:hunk_re = '^@@\v -(\d+),?(\d*) \+(\d+),?(\d*)'
 let s:filename_re = '^+++\v (.*)'

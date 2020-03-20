@@ -1,5 +1,3 @@
-echom 'loaded autoload/gitsign.vim'
-
 let s:repo_root = ''
 let s:signs = {}
 

@@ -1,5 +1,3 @@
-echom 'loaded autoload/gitsign/sign.vim'
-
 let g:gitsign#sign#add_mark = get(g:, 'gitsign#sign#add_mark', '+')
 let g:gitsign#sign#delete_mark = get(g:, 'gitsign#sign#delete_mark', '_')
 let g:gitsign#sign#delete_first_line_mark = get(g:, 'gitsign#sign#delete_first_line_mark', '^')
