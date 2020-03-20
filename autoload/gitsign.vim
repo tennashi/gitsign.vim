@@ -3,11 +3,7 @@ let s:signs = {}
 
 let s:path_sep = fnamemodify('.', ':p')[-1:]
 
-function! gitsign#initialize() abort
-  if !g:gitsign#enable
-    return
-  endif
-
+function! s:initialize() abort
   if !executable('git')
     return
   endif
@@ -19,16 +15,29 @@ function! gitsign#initialize() abort
 
   call gitsign#highlight#initialize()
   call gitsign#sign#initialize()
-  call gitsign#enable()
+  call s:enable_events()
 endfunction
 
-function! gitsign#enable() abort
+function! s:enable_events() abort
   augroup GitsignAutoUpdate
     autocmd!
     autocmd User gitsign_sign_updated call s:apply_signs()
     autocmd BufWritePost * call s:update_signs()
   augroup END
+endfunction
+
+function! s:disable_events() abort
+  autocmd! GitsignAutoUpdate
+endfunction
+
+function! gitsign#enable() abort
+  call s:initialize()
   call s:update_signs()
+endfunction
+
+function! gitsign#disable() abort
+  call s:disable_events()
+  call gitsign#sign#clear(bufnr())
 endfunction
 
 function! s:apply_signs() abort
@@ -48,13 +57,6 @@ function! s:update_signs() abort
     endif
   endfor
   call gitsign#diff#update()
-endfunction
-
-function! gitsign#disable() abort
-  augroup GitsignAutoUpdate
-    autocmd!
-  augroup END
-  call gitsign#sign#clear(bufnr())
 endfunction
 
 function! gitsign#add_sign(fname, hunk) abort
