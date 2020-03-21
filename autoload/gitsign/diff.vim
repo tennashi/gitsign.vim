@@ -48,8 +48,14 @@ endfunction
 function! gitsign#diff#to_sign(hunk) abort
   let l:signs = {}
   let l:lnum = a:hunk['add_start']
+
+  if l:lnum == 0
+    let l:signs[1] = 'GitsignDeleteFirstLine'
+    return l:signs
+  endif
+
   if a:hunk['add_range'] == 0
-    let l:signs[l:lnum] = l:lnum == 0 ? 'GitsignDeleteFirstLine' : 'GitsignDelete'
+    let l:signs[l:lnum] = 'GitsignDelete'
     return l:signs
   endif
 
