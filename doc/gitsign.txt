@@ -1,0 +1,138 @@
+*gitsign.txt* Show `git diff` in the sign column.
+
+Version: 0.0.1
+Author: tennashi <yuya.gt@gmail.com>
+License: MIT
+
+==============================================================================
+CONTENTS                                                    *gitsign-contents*
+
+INTRODUCTION                              |gitsign-introduction|
+INSTALL                                   |gitsign-install|
+INTERFACE                                 |gitsign-interface|
+  COMMANDS                                  |gitsign-commands|
+  MAPPINGS                                  |gitsign-mappings|
+  OPTIONS                                   |gitsign-options|
+
+==============================================================================
+INTRODUCTION                                            *gitsign-introduction*
+
+*gitsign* is Vim plugin to show `git diff` in the sign column.
+
+==============================================================================
+INSTALL                                                      *gitsign-install*
+
+* vim-plug(https://github.com/junegunn/vim-plug)
+>
+    Plug 'tennashi/gitsign.vim'
+<
+
+* dein.vim(https://github.com/Shougo/dein.vim)
+>
+    call dein#add('tennashi/gitsign.vim')
+<
+
+* volt(https://github.com/vim-volt/volt)
+>
+    $ volt get tennashi/gitsign.vim
+<
+
+==============================================================================
+INTERFACE                                                  *gitsign-interface*
+
+------------------------------------------------------------------------------
+COMMANDS                                                    *gitsign-commands*
+
+:GitsignEnable                                                *:GitsignEnable*
+  Enable gitsign
+
+:GitsignDisable                                              *:GitsignDisable*
+  Disable gitsign
+
+------------------------------------------------------------------------------
+MAPPINGS                                                    *gitsign-mappings*
+
+<Plug>(gitsign-enable)                                *<Plug>(gitsign-enable)*
+  Enable gitsign
+
+<Plug>(gitsign-disable)                              *<Plug>(gitsign-disable)*
+  Disable gitsign
+
+------------------------------------------------------------------------------
+OPTIONS                                                      *gitsign-options*
+
+g:gitsign#auto_enable                                  *g:gitsign#auto_enable*
+  Type: |Number|
+  Default: 1
+
+  Specify whether to enable gitsign automatically when vim starts.
+
+  Example: >
+    let g:gitsign#auto_enable = 1 " enable auto enable
+    let g:gitsign#auto_enable = 0 " disable auto enable
+<
+
+g:gitsign#highlight#enable_lines            *g:gitsign#highlight#enable_lines*
+  Type: |Number|
+  Default: 1
+
+  Specify whether to enable line highlighting.
+
+  Example: >
+    let g:gitsign#highlight#enable_lines = 1
+    let g:gitsign#highlight#enable_lines = 0
+<
+
+g:gitsign#highlight#enable_marks            *g:gitsign#highlight#enable_marks*
+  Type: |Number|
+  Default: 1
+
+  Specify whether to enable mark highlighting.
+
+  Example: >
+    let g:gitsign#highlight#enable_marks = 1
+    let g:gitsign#highlight#enable_marks = 0
+<
+
+g:gitsign#sign#add_mark                              *g:gitsign#sign#add_mark*
+  Type: |String|
+  Default: '+'
+
+  Specify symbol of added line.
+
+  Example: >
+    let g:gitsign#sign#add_mark = '󿕓'
+<
+
+g:gitsign#sign#delete_mark                        *g:gitsign#sign#delete_mark*
+  Type: |String|
+  Default: '_'
+
+  Specify symbol of deleted line.
+
+  Example: >
+    let g:gitsign#sign#delete_mark = '󿕂'
+<
+
+g:gitsign#sign#delete_first_line_mark  *g:gitsign#sign#delete_first_line_mark*
+  Type: |String|
+  Default: '^'
+
+  Specify symbol of deleted line.
+
+  Example: >
+    let g:gitsign#sign#delete_first_line_mark = '󿕛'
+<
+
+g:gitsign#sign#change_mark                        *g:gitsign#sign#change_mark*
+  Type: |String|
+  Default: '~'
+
+  Specify symbol of changed line.
+
+  Example: >
+    let g:gitsign#sign#change_mark = '󿕓'
+<
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
