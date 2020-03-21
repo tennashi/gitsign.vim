@@ -3,41 +3,46 @@ let s:hunk_re = '^@@\v -(\d+),?(\d*) \+(\d+),?(\d*)'
 let s:filename_re = '^+++\v (.*)'
 let s:processing_file = ''
 
-function! gitsign#diff#initialize(repo_root) abort
-  let s:repository_root = a:repo_root
-endfunction
-
 function! gitsign#diff#update() abort
   call job_start(s:diff_cmd, {
-  \ 'out_cb': function('s:process_output'),
-  \ 'exit_cb': function('s:done'),
+  \ 'out_cb': function('s:on_stdout'),
+  \ 'exit_cb': function('s:on_exit'),
   \})
 endfunction
 
-function! s:process_output(_ch, msg) abort
+function! s:on_stdout(_ch, msg) abort
   let l:matches = matchlist(a:msg, s:filename_re)
   if len(l:matches) !=# 0
-    let s:processing_file = l:matches[1]
+    call s:process_fname_line(l:matches)
     return
   endif
 
   let l:matches = matchlist(a:msg, s:hunk_re)
   if len(l:matches) !=# 0
-    let l:hunk = map(l:matches[1:4],
-    \ { _, val -> val ==# ''? 1 : str2nr(val) }
-    \)
-
-    call gitsign#add_sign(s:processing_file, {
-    \ 'del_start': l:hunk[0],
-    \ 'del_range': l:hunk[1],
-    \ 'add_start': l:hunk[2],
-    \ 'add_range': l:hunk[3],
-    \})
+    call s:process_hunk_line(l:matches)
+    return
   endif
 endfunction
 
-function! s:done(_job, _status) abort
+function! s:on_exit(_job, _status) abort
   doautocmd <nomodeline> User gitsign_sign_updated
+endfunction
+
+function! s:process_fname_line(matches) abort
+  let s:processing_file = a:matches[1]
+endfunction
+
+function! s:process_hunk_line(matches) abort
+  let l:hunk = map(a:matches[1:4],
+  \ { _, val -> val ==# ''? 1 : str2nr(val) }
+  \)
+
+  call gitsign#add_sign(s:processing_file, {
+  \ 'del_start': l:hunk[0],
+  \ 'del_range': l:hunk[1],
+  \ 'add_start': l:hunk[2],
+  \ 'add_range': l:hunk[3],
+  \})
 endfunction
 
 function! gitsign#diff#to_sign(hunk) abort
@@ -60,6 +65,5 @@ function! gitsign#diff#to_sign(hunk) abort
     let l:signs[l:lnum] = 'GitsignChange'
     let l:lnum += 1
   endwhile
-
   return l:signs
 endfunction

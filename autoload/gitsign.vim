@@ -3,6 +3,21 @@ let s:signs = {}
 
 let s:path_sep = fnamemodify('.', ':p')[-1:]
 
+function! gitsign#enable() abort
+  try
+    call s:initialize()
+  catch
+    call gitsign#error_msg(v:exception)
+    return
+  endtry
+  call s:update_signs()
+endfunction
+
+function! gitsign#disable() abort
+  call s:disable_events()
+  call gitsign#sign#clear(bufnr())
+endfunction
+
 function! s:initialize() abort
   if !executable('git')
     throw 'git is not executable'
@@ -33,21 +48,6 @@ function! s:disable_events() abort
   autocmd! GitsignAutoUpdate
 endfunction
 
-function! gitsign#enable() abort
-  try
-    call s:initialize()
-  catch
-    call gitsign#error_msg(v:exception)
-    return
-  endtry
-  call s:update_signs()
-endfunction
-
-function! gitsign#disable() abort
-  call s:disable_events()
-  call gitsign#sign#clear(bufnr())
-endfunction
-
 function! s:apply_signs() abort
   let l:bufnrs = tabpagebuflist()
   for l:bufnr in l:bufnrs
@@ -73,8 +73,7 @@ function! gitsign#add_sign(fname, hunk) abort
     let s:signs[l:fname] = {}
   endif
 
-  let l:sign = gitsign#diff#to_sign(a:hunk)
-  call extend(s:signs[l:fname], l:sign)
+  call extend(s:signs[l:fname], gitsign#diff#to_sign(a:hunk))
 endfunction
 
 function! gitsign#error_msg(msg) abort
