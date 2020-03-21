@@ -2,6 +2,8 @@
 gitsign is Vim plugin to show `git diff` in the sign column.
 This is a study plugin based on [airblade/vim-gitgutter](https://github.com/airblade/vim-gitgutter)
 
+![screenshot](./screenshot.png)
+
 ## Install
 * [vim-plug](https://github.com/junegunn/vim-plug)
 
