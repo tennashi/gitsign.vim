@@ -1,15 +1,15 @@
 let s:line_initialized = v:false
 let s:mark_initialized = v:false
 
-let g:gitsign#highlight#line_enable = get(g:, 'gitsign#highlight#line_enable', 1)
-let g:gitsign#highlight#mark_enable = get(g:, 'gitsign#highlight#mark_enable', 1)
+let g:gitsign#highlight#enable_lines = get(g:, 'gitsign#highlight#enable_lines', 1)
+let g:gitsign#highlight#enable_marks = get(g:, 'gitsign#highlight#enable_marks', 1)
 
 function! gitsign#highlight#initialize() abort
-  if g:gitsign#highlight#line_enable && !s:line_initialized
+  if g:gitsign#highlight#enable_lines && !s:line_initialized
     call s:initialize_line()
     let s:line_initialized = v:true
   endif
-  if g:gitsign#highlight#mark_enable && !s:mark_initialized
+  if g:gitsign#highlight#enable_marks && !s:mark_initialized
     call s:initialize_mark()
     let s:mark_initialized = v:true
   endif
