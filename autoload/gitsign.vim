@@ -5,12 +5,15 @@ let s:path_sep = fnamemodify('.', ':p')[-1:]
 
 function! s:initialize() abort
   if !executable('git')
-    return
+    throw 'git is not executable'
   endif
 
   let s:repo_root = systemlist('git rev-parse --show-toplevel')[0]
+  if v:shell_error
+    throw 'git: ' . s:repo_root
+  endif
   if s:repo_root ==# ''
-    return
+    throw getcwd() . ' is not a git repository'
   endif
 
   call gitsign#highlight#initialize()
@@ -31,7 +34,12 @@ function! s:disable_events() abort
 endfunction
 
 function! gitsign#enable() abort
-  call s:initialize()
+  try
+    call s:initialize()
+  catch
+    call gitsign#error_msg(v:exception)
+    return
+  endtry
   call s:update_signs()
 endfunction
 
@@ -69,3 +77,9 @@ function! gitsign#add_sign(fname, hunk) abort
   call extend(s:signs[l:fname], l:sign)
 endfunction
 
+function! gitsign#error_msg(msg) abort
+  echohl ErrorMsg
+  redraw
+  echom '[gitsign] ' . a:msg
+  echohl None
+endfunction
