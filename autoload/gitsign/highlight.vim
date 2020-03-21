@@ -1,5 +1,5 @@
-let s:line_initialized = false
-let s:mark_initialized = false
+let s:line_initialized = v:false
+let s:mark_initialized = v:false
 
 let g:gitsign#highlight#line_enable = get(g:, 'gitsign#highlight#line_enable', 1)
 let g:gitsign#highlight#mark_enable = get(g:, 'gitsign#highlight#mark_enable', 1)
