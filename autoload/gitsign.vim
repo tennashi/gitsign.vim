@@ -7,7 +7,6 @@ function! gitsign#enable() abort
   try
     call s:initialize()
   catch
-    call gitsign#error_msg(v:exception)
     return
   endtry
   call s:update_signs()
