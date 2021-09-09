@@ -4,22 +4,27 @@ This is a study plugin based on [airblade/vim-gitgutter](https://github.com/airb
 
 ![screenshot](./screenshot.png)
 
+Powered by [denops.vim](https://github.com/vim-denops/denops.vim)
+
 ## Install
 * [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
+Plug 'vim-denops/denops.vim'
 Plug 'tennashi/gitsign.vim'
 ```
 
 * [dein.vim](https://github.com/Shougo/dein.vim)
 
 ```vim
+call dein#add('vim-denops/denops.vim')
 call dein#add('tennashi/gitsign.vim')
 ```
 
 * [volt](https://github.com/vim-volt/volt)
 
 ```bash
+$ volt get vim-denops/denops.vim
 $ volt get tennashi/gitsign.vim
 ```
 
