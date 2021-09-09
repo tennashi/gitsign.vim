@@ -32,62 +32,6 @@ const getDiff = async (): Promise<string> => {
   return ret;
 };
 
-type EditType = "delete_first_line" | "delete" | "add" | "change";
-
-type Edit = {
-  line: number;
-  type: EditType;
-};
-
-type FileEdit = {
-  fileName: string,
-  edits: Edit[],
-}
-
-const diffToEdits = (diff: Diff): Edit[] => {
-  return diff.hunks.map((hunk): Edit | Edit[] => {
-    if (hunk.header.afterStartLine === 0) {
-      return {
-        line: 1,
-        type: "delete_first_line",
-      };
-    }
-
-    if (hunk.header.afterLines === 0) {
-      return {
-        line: hunk.header.afterStartLine,
-        type: "delete",
-      };
-    }
-
-    if (hunk.header.beforeLines === 0) {
-      return [...Array(hunk.header.afterLines)].map((_, idx) => ({
-        line: hunk.header.afterStartLine + idx,
-        type: "add",
-      }));
-    }
-
-    return [...Array(hunk.header.afterLines)].map((_, idx) => ({
-      line: hunk.header.afterStartLine + idx,
-      type: "change",
-    }))
-  }).flat();
-};
-
-const toSigns = (fileEdits: FileEdit[]): Signs => {
-  const signs: Signs = {}
-
-  fileEdits.forEach((fileEdit) => {
-    signs[fileEdit.fileName] = {}
-
-    fileEdit.edits.forEach((edit) => {
-      signs[fileEdit.fileName][edit.line] = toSignType(edit.type)
-    })
-  })
-
-  return signs;
-}
-
 const getSigns = async (): Promise<Signs> => {
   const gitRepoRoot = await getRepositoryRoot();
   const gitDiff = await getDiff();
@@ -143,19 +87,6 @@ const toSignLines = (diff: Diff): SignLines => {
 
   return signs;
 };
-
-const toSignType = (editType: EditType): SignType => {
-  switch (editType) {
-    case "delete_first_line":
-      return "GitsignDeleteFirstLine";
-    case "delete":
-      return "GitsignDelete";
-    case "add":
-      return "GitsignAdd";
-    case "change":
-      return "GitsignChange";
-  }
-}
 
 export function main(denops: Denops): Promise<void> {
   denops.dispatcher = {
