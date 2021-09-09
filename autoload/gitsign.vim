@@ -66,13 +66,8 @@ function! s:update_signs() abort
   call gitsign#diff#update()
 endfunction
 
-function! gitsign#add_sign(fname, hunk) abort
-  let l:fname = s:repo_root . s:path_sep . a:fname
-  if !has_key(s:signs, l:fname)
-    let s:signs[l:fname] = {}
-  endif
-
-  call extend(s:signs[l:fname], gitsign#diff#to_sign(a:hunk))
+function! gitsign#set_signs(signs) abort
+  let s:signs = a:signs
 endfunction
 
 function! gitsign#error_msg(msg) abort

@@ -36,7 +36,6 @@ endfunction
 function! gitsign#sign#apply(bufnr, signs) abort
   let l:bufname = fnamemodify(bufname(a:bufnr), ':p')
   if has_key(a:signs, l:bufname)
-    echom a:signs[l:bufname]
     call map(copy(a:signs[l:bufname]), { lnum, sign ->
     \ sign_place(0, 'gitsign', sign, l:bufname, { 'lnum': lnum })
     \})
