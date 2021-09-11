@@ -3,7 +3,12 @@ function! gitsign#diff#update() abort
 endfunction
 
 function! s:on_failure(...)
-  call gitsign#error_msg(a:000)
+  if type(a:1) ==# v:t_string
+    call gitsign#error_msg(a:1)
+    return
+  endif
+
+  call gitsign#error_msg(json_encode(a:1))
 endfunction
 
 function! s:on_success(...)
