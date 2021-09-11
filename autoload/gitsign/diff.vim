@@ -13,5 +13,5 @@ endfunction
 
 function! s:on_success(...)
   call gitsign#set_signs(a:1)
-  doautocmd <nomodeline> User gitsign_sign_updated
+  call timer_start(0, { _ -> execute('doautocmd <nomodeline> User gitsign_sign_updated') })
 endfunction
