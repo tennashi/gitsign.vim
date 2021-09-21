@@ -20,5 +20,5 @@ endfunction
 
 augroup InitializeGitsign
   autocmd!
-  autocmd User DenopsPluginPost:gitsign call s:initialize()
+  autocmd User DenopsPluginPost:gitsign call timer_start(0, { _ -> s:initialize() })
 augroup END
