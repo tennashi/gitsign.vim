@@ -58,5 +58,12 @@ let g:gitsign#sign#add_mark = '󿕓'
 let g:gitsign#sign#change_mark = '󿕓'
 ```
 
+### Auto toggle highlights
+```vim
+let g:gitsign#highlight#auto_toggle = 1
+```
+
+![autotoggle](./autotoggle.gif)
+
 ## License
 MIT
