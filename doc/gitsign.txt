@@ -92,6 +92,17 @@ g:gitsign#highlight#enable_marks            *g:gitsign#highlight#enable_marks*
   Example: >
     let g:gitsign#highlight#enable_marks = 1
     let g:gitsign#highlight#enable_marks = 0
+
+
+g:gitsign#highlight#auto_toggle		     *g:gitsign#highlight#auto_toggle*
+  Type: |Number|
+  Default: 0
+
+  Specify whether to enable auto toggle of highlighting.
+
+  Example: >
+    let g:gitsign#highlight#auto_toggle = 1
+    let g:gitsign#highlight#auto_toggle = 0
 <
 
 g:gitsign#sign#add_mark                              *g:gitsign#sign#add_mark*
