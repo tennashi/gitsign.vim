@@ -35,9 +35,9 @@ function! s:activate_line() abort
 endfunction
 
 function! s:initialize_line() abort
-  highlight default link GitsignAdd DiffAdd
+  highlight! default link GitsignAdd DiffAdd
   highlight GitsignDelete gui=undercurl guisp=Red
-  highlight default link GitsignChange DiffChange
+  highlight! default link GitsignChange DiffChange
 endfunction
 
 function! s:initialize_mark() abort
