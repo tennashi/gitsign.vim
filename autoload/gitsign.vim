@@ -39,7 +39,7 @@ function! s:enable_events() abort
   augroup GitsignAutoUpdate
     autocmd!
     autocmd User gitsign_sign_updated call s:apply_signs()
-    autocmd BufWritePost * call s:update_signs()
+    autocmd BufRead,BufNewFile,BufWritePost * call s:update_signs()
   augroup END
 endfunction
 
